@@ -4,7 +4,8 @@ from itertools import permutations
 
 def main():
 	# 8 and 9 pandigitals can't be prime because they can
-	# all be divided by 3 since the sum of their digits = 3
+	# all be divided by 3 since the sum of their digits can
+	# be divided by 3.
 	print(max(filter(is_prime, pandigitals(7))))
 
 def pandigitals(digits):
