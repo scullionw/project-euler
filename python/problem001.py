@@ -1,8 +1,19 @@
-sumVar = 0
+from tools import timer
 
-for i in range(1, 1000):
+@timer
+def compute(bound):
+    total = 0
+    for i in range(1, bound):
+        if i % 3 == 0 or i % 5 == 0:
+            total += i
+    return total
 
-    if i % 3 == 0 or i % 5 == 0:
-        sumVar += i
+@timer
+def compute_fp(bound):
+    return sum(filter(lambda x: x % 3 == 0 or x % 5 == 0, range(1, bound)))
 
-print(sumVar)
+def main():
+    print(compute_fn(100000000))
+
+if __name__ == '__main__':
+    main()
