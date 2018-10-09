@@ -19,6 +19,7 @@ fn solve(n: u64) -> u64 {
 
 fn main() {
     euler::go(solve, 1000);
+    euler::bench(solve, 1000, 1000);
 }
 
 #[cfg(test)]

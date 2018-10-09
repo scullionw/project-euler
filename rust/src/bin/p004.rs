@@ -21,6 +21,7 @@ fn solve(digits: u64) -> u64 {
 
 fn main() {
     euler::go(solve, 3);
+    euler::bench(solve, 3, 10);
 }
 
 #[cfg(test)]

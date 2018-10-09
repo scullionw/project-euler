@@ -1,4 +1,6 @@
 extern crate euler;
+
+#[cfg(feature = "fp")]
 use euler::Fibonnaci;
 
 
@@ -30,6 +32,7 @@ fn solve(n: u64) -> u64 {
 
 fn main() {
     euler::go(solve, 4_000_000);
+    euler::bench(solve, 4_000_000, 1000);
 }
 
 #[cfg(test)]
