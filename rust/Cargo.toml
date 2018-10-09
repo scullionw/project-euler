@@ -1,0 +1,10 @@
+[package]
+name = "euler"
+version = "0.1.0"
+authors = ["scullionw <scuw1801@usherbrooke.ca>"]
+
+[dependencies]
+time = "*"
+
+[features]
+fp = []
