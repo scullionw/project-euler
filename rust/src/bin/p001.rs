@@ -1,6 +1,5 @@
 extern crate euler;
 
-
 #[cfg(not(feature = "fp"))]
 fn solve(n: u64) -> u64 {
     let mut sum = 0;

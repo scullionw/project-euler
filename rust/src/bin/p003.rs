@@ -1,6 +1,5 @@
 extern crate euler;
 
-
 fn solve(n: u64) -> u64 {
     euler::largest_prime_factor(n)
 }

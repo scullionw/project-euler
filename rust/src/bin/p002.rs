@@ -3,7 +3,6 @@ extern crate euler;
 #[cfg(feature = "fp")]
 use euler::Fibonnaci;
 
-
 #[cfg(not(feature = "fp"))]
 fn solve(n: u64) -> u64 {
     let mut a = 1;
@@ -28,7 +27,6 @@ fn solve(n: u64) -> u64 {
                     .filter(|&x| x % 2 == 0)
                     .sum()
 }
-
 
 fn main() {
     euler::go(solve, 4_000_000);
