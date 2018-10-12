@@ -4,7 +4,7 @@
 
     cargo run --release --bin p005
 
-## To run faster with:
+## Optimizations for speed:
 
 1. Enable processor specific intrinsics
 
@@ -13,7 +13,7 @@
 2. Enable link-time optimizations
 
         [profile.release]
-        lto = true
+        lto = true # or thin
 
 3. Possible gains (no significant differences measured)
 
@@ -21,3 +21,7 @@
         lto = true
         panic = "abort"
         codegen-units=1
+
+## Optimizations for size
+
+    $ strip ./target/release/p005
