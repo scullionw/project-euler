@@ -4,15 +4,20 @@
 
     cargo run --release --bin p005
 
-## Bugs
+## To run faster with:
 
-1. Programs don't terminate when (and maxes out cpu):
+1. Enable processor specific intrinsics
 
         $ env RUSTFLAGS="-C target-cpu=native" cargo run --release --bin p005
 
-    and
+2. Enable link-time optimizations
 
         [profile.release]
         lto = true
 
-    are both enabled. Any other combination works.
+3. Possible gains (no significant differences measured)
+
+        [profile.release]
+        lto = true
+        panic = "abort"
+        codegen-units=1

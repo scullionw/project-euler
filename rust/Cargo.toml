@@ -4,12 +4,19 @@ version = "0.1.0"
 authors = ["scullionw <scuw1801@usherbrooke.ca>"]
 
 [dependencies]
-time = "*"
+time = "0.1"
+num-integer = "0.1"
 
 [features]
 fp = []
 
 [profile.release]
-# lto + target cpu native causes program (any bin/p*.rs)
-# to never terminate and consume 99% processor
-# lto = true 
+opt-level = 3
+debug = false
+rpath = false
+lto = true
+debug-assertions = false
+codegen-units = 1
+panic = 'abort'
+incremental = false
+overflow-checks = false

@@ -13,7 +13,7 @@ fn solve(n: u64) -> u64 {
 
 #[cfg(feature = "fp")]
 fn solve(n: u64) -> u64 {
-    (1..n).filter(|x| (x % 3 == 0) || (x % 5 == 0)).sum()
+    (1..n).filter(|x| x % 3 == 0 || x % 5 == 0).sum()
 }
 
 fn main() {
