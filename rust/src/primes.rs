@@ -90,6 +90,7 @@ pub fn p_minus_1(n: u64, mut a: u64) -> (u64, u64) {
 
 // use fnv hash function for better performance
 pub struct PrimeSequence {
+    started: bool,
     candidate: u64,
     first_prime_factor: HashMap<u64, u64, FnvBuildHasher>
 }
@@ -97,7 +98,8 @@ pub struct PrimeSequence {
 impl PrimeSequence {
     pub fn new() -> PrimeSequence {
         PrimeSequence {
-            candidate: 2,
+            started: false,
+            candidate: 3,
             first_prime_factor: HashMap::default()
         }
     }
@@ -107,16 +109,20 @@ impl Iterator for PrimeSequence {
     type Item = u64;
 
     fn next(&mut self) -> Option<u64> {
+        // Return a chain of (2, PrimeSequence)? how? ugly..
+        if !self.started {
+            self.started = true;
+            return Some(2)
+        }
         loop {
             let candidate = self.candidate;
-            self.candidate += 1;
+            self.candidate += 2;
             match self.first_prime_factor.remove(&candidate) {
                 Some(factor) => {
                     let mut next_multiple = factor + candidate;
-                    while self.first_prime_factor.contains_key(&next_multiple) {
+                    while next_multiple % 2 == 0 || self.first_prime_factor.contains_key(&next_multiple){
                         next_multiple += factor;
                     }
-                    // TODO: check if None is unreachable
                     self.first_prime_factor.insert(next_multiple, factor);
                 },
                 None => {
