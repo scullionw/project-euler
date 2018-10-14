@@ -92,7 +92,8 @@ pub fn p_minus_1(n: u64, mut a: u64) -> (u64, u64) {
 pub struct PrimeSequence {
     started: bool,
     candidate: u64,
-    first_prime_factor: HashMap<u64, u64, FnvBuildHasher>
+    first_prime_factor: HashMap<u64, u64, FnvBuildHasher>,
+    next_func: fn(&mut PrimeSequence) -> Option<u64>
 }
 
 impl PrimeSequence {
@@ -100,20 +101,17 @@ impl PrimeSequence {
         PrimeSequence {
             started: false,
             candidate: 3,
-            first_prime_factor: HashMap::default()
+            first_prime_factor: HashMap::default(),
+            next_func: PrimeSequence::head,
         }
     }
-}
 
-impl Iterator for PrimeSequence {
-    type Item = u64;
+    fn head(&mut self) -> Option<u64> {
+        self.next_func = PrimeSequence::tail;
+        Some(2)
+    }
 
-    fn next(&mut self) -> Option<u64> {
-        // Return a chain of (2, PrimeSequence)? how? ugly..
-        if !self.started {
-            self.started = true;
-            return Some(2)
-        }
+    fn tail(&mut self) -> Option<u64> {
         loop {
             let candidate = self.candidate;
             self.candidate += 2;
@@ -131,6 +129,16 @@ impl Iterator for PrimeSequence {
                 }
             }
         }
+    }
+}
+
+impl Iterator for PrimeSequence {
+    type Item = u64;
+
+    fn next(&mut self) -> Option<u64> {
+        // Return a chain of (2, PrimeSequence) or 
+        // function ptr indirection to emulate self modifying code
+        (self.next_func)(self)
     }
 }
 
