@@ -1,4 +1,6 @@
 use gcd;
+use std::cmp::{min, max};
+use std::collections::VecDeque;
 
 pub fn largest_prime_factor(mut n: u64) -> u64 {
     while n % 2 == 0 {
@@ -17,6 +19,20 @@ pub fn largest_prime_factor(mut n: u64) -> u64 {
     divisor
 }
 
+// TODO: Can i make a lazy finder (using Infinity::new())
+pub fn primes_under_or_equal_alt(n: u64) -> Vec<u64> {
+    let mut candidates: VecDeque<_> = (2..=n).collect();
+    let mut primes = vec![];
+    loop {
+        match candidates.pop_front() {
+            Some(p) => {
+                primes.push(p);
+                candidates.retain(|x| x % p != 0);
+            },
+            None => { break primes }
+        }
+    }
+}
 
 // TODO: Make prime sieve using channels and normally, and with vec retain
 pub fn primes_under_or_equal(n: u64) -> Vec<u64> {
@@ -45,7 +61,7 @@ where
         let diff = if x > y { x - y } else { y - x };
         let divisor = gcd(diff % n, n);
         if ![1, n].contains(&divisor) {
-            break (divisor, n / divisor)
+            break (min(divisor, n / divisor), max(divisor, n / divisor))
         }
         x = func(x) % n;
         y = func(func(y)) % n;
@@ -62,7 +78,7 @@ pub fn p_minus_1(n: u64, mut a: u64) -> (u64, u64) {
         a = a.pow(e) % n;
         let divisor = gcd(a - 1, n);
         if ![1, n].contains(&divisor) {
-            break (divisor, n / divisor)
+            break (min(divisor, n / divisor), max(divisor, n / divisor))
         }
         e += 1;
     }
@@ -85,6 +101,11 @@ mod tests {
         assert_eq!(super::primes_under_or_equal(20), vec![2,3,5,7,11,13,17,19]);
     }
 
+    #[test]
+    fn test_primes_under_or_equal_alt() {
+        assert_eq!(super::primes_under_or_equal_alt(20), vec![2,3,5,7,11,13,17,19]);
+    }
+
     fn poly(x: u64) -> u64 {
         x.pow(2) + 5
     }
@@ -97,6 +118,6 @@ mod tests {
 
     #[test]
     fn test_p_minus_1() {
-        assert_eq!(super::p_minus_1(2867, 2), (61, 47));
+        assert_eq!(super::p_minus_1(2867, 2), (47, 61));
     }
 }
