@@ -1,6 +1,7 @@
 use gcd;
 use std::cmp::{min, max};
-use std::collections::VecDeque;
+use std::collections::HashMap;
+use fnv::FnvBuildHasher;
 
 pub fn largest_prime_factor(mut n: u64) -> u64 {
     while n % 2 == 0 {
@@ -21,10 +22,10 @@ pub fn largest_prime_factor(mut n: u64) -> u64 {
 
 // TODO: Can i make a lazy finder (using Infinity::new())
 pub fn primes_under_or_equal_alt(n: u64) -> Vec<u64> {
-    let mut candidates: VecDeque<_> = (2..=n).collect();
+    let mut candidates: Vec<_> = (2..=n).rev().collect();
     let mut primes = vec![];
     loop {
-        match candidates.pop_front() {
+        match candidates.pop() {
             Some(p) => {
                 primes.push(p);
                 candidates.retain(|x| x % p != 0);
@@ -84,9 +85,49 @@ pub fn p_minus_1(n: u64, mut a: u64) -> (u64, u64) {
     }
 }
 
-
 // TODO: Add miller rabin primality test
 // and the other newer one. Check for other algos used s6app5.
+
+// use fnv hash function for better performance
+pub struct PrimeSequence {
+    candidate: u64,
+    first_prime_factor: HashMap<u64, u64, FnvBuildHasher>
+}
+
+impl PrimeSequence {
+    pub fn new() -> PrimeSequence {
+        PrimeSequence {
+            candidate: 2,
+            first_prime_factor: HashMap::default()
+        }
+    }
+}
+
+impl Iterator for PrimeSequence {
+    type Item = u64;
+
+    fn next(&mut self) -> Option<u64> {
+        loop {
+            let candidate = self.candidate;
+            self.candidate += 1;
+            match self.first_prime_factor.remove(&candidate) {
+                Some(factor) => {
+                    let mut next_multiple = factor + candidate;
+                    while self.first_prime_factor.contains_key(&next_multiple) {
+                        next_multiple += factor;
+                    }
+                    // TODO: check if None is unreachable
+                    self.first_prime_factor.insert(next_multiple, factor);
+                },
+                None => {
+                    self.first_prime_factor.insert(candidate.pow(2), candidate);
+                    break Some(candidate);
+                }
+            }
+        }
+    }
+}
+
 
 #[cfg(test)]
 mod tests {
@@ -104,6 +145,11 @@ mod tests {
     #[test]
     fn test_primes_under_or_equal_alt() {
         assert_eq!(super::primes_under_or_equal_alt(20), vec![2,3,5,7,11,13,17,19]);
+    }
+
+    #[test]
+    fn test_prime_sequence () {
+        assert_eq!(super::PrimeSequence::new().take(8).collect::<Vec<u64>>(), vec![2,3,5,7,11,13,17,19]);
     }
 
     fn poly(x: u64) -> u64 {

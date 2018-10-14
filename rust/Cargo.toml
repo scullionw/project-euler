@@ -6,6 +6,7 @@ authors = ["scullionw <scuw1801@usherbrooke.ca>"]
 [dependencies]
 time = "0.1"
 num-integer = "0.1"
+fnv = "1.0.6"
 
 [features]
 fp = []
