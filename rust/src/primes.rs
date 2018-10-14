@@ -90,7 +90,6 @@ pub fn p_minus_1(n: u64, mut a: u64) -> (u64, u64) {
 
 // use fnv hash function for better performance
 pub struct PrimeSequence {
-    started: bool,
     candidate: u64,
     first_prime_factor: HashMap<u64, u64, FnvBuildHasher>,
     next_func: fn(&mut PrimeSequence) -> Option<u64>
@@ -99,7 +98,6 @@ pub struct PrimeSequence {
 impl PrimeSequence {
     pub fn new() -> PrimeSequence {
         PrimeSequence {
-            started: false,
             candidate: 3,
             first_prime_factor: HashMap::default(),
             next_func: PrimeSequence::head,
