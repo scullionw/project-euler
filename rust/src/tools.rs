@@ -3,10 +3,10 @@ use std;
 
 // TODO: try passing a closure like Duration::span to avoid
 // passing argument
-fn measure_execution<T, F>(func: F, arg: T) -> (T, Duration)
+fn measure_execution<I, F, O>(func: F, arg: I) -> (O, Duration)
 where
-    T: Copy,
-    F: Fn(T) -> T + Copy
+    I: Copy,
+    F: Fn(I) -> O + Copy
 {
     let begin = PreciseTime::now();
     let answer = func(arg);
@@ -15,10 +15,10 @@ where
 }
 
 // TODO: use actual bench suite and export times for all problems and append to readme.
-pub fn bench<T, F>(func: F, arg: T, runs: i64)
+pub fn bench<I, F, O>(func: F, arg: I, runs: i64)
 where
-    T: Copy,
-    F: Fn(T) -> T + Copy
+    I: Copy,
+    F: Fn(I) -> O + Copy
 {
     let sum = (0..runs)
         .map(|_| {
@@ -38,10 +38,11 @@ where
     }
 }
 
-pub fn go<T, F>(func: F, arg: T)
+pub fn go<I, F, O>(func: F, arg: I)
 where
-    T: Copy + std::fmt::Display,
-    F: Fn(T) -> T + Copy
+    I: Copy,
+    O: std::fmt::Display,
+    F: Fn(I) -> O + Copy
 {
     let (answer, duration) = measure_execution(func, arg);
     let mode = if cfg!(feature = "fp") { "FP" } else { "Normal" };

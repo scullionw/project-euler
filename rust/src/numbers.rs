@@ -25,32 +25,3 @@ pub fn div_mod(n: u64, divisor: u64) -> (u64, u64) {
     let quotient = n / divisor;
     (quotient, n - divisor * quotient)
 }
-
-
-pub struct Infinity {
-    val: u64
-}
-
-impl Infinity {
-    pub fn naturals() -> Infinity {
-        Infinity { val: 1 }
-    }
-
-    pub fn wholes() -> Infinity {
-        Infinity { val: 0 }
-    }
-
-    pub fn from(n: u64) -> Infinity {
-        Infinity { val: n }
-    }
-}
-
-impl Iterator for Infinity {
-    type Item = u64;
-
-    fn next(&mut self) -> Option<Self::Item> {
-        let current = self.val;
-        self.val += 1;
-        Some(current)
-    }
-}
