@@ -9,12 +9,21 @@ where
     F: Fn(I) -> O + Copy
 {
     let start = std::time::Instant::now();
-    let answer = func(arg);
+    let answer = black_box(func(arg));
     let elapsed = start.elapsed();
     (answer, elapsed)
 }
 
+pub fn black_box<T>(dummy: T) -> T {
+    unsafe {
+        let ret = std::ptr::read_volatile(&dummy);
+        std::mem::forget(dummy);
+        ret
+    }
+}
+
 // TODO: use actual bench suite and export times for all problems and append to readme.
+// use black box, calculate total time of all iterations. Not every iter.
 pub fn bench<I, F, O>(func: F, arg: I, runs: i64)
 where
     I: Copy,
