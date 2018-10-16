@@ -1,5 +1,5 @@
-use time::{PreciseTime, Duration};
 use std;
+use std::time::Duration;
 
 // TODO: try passing a closure like Duration::span to avoid
 // passing argument
@@ -8,10 +8,10 @@ where
     I: Copy,
     F: Fn(I) -> O + Copy
 {
-    let begin = PreciseTime::now();
+    let start = std::time::Instant::now();
     let answer = func(arg);
-    let end = PreciseTime::now();
-    (answer, begin.to(end))
+    let elapsed = start.elapsed();
+    (answer, elapsed)
 }
 
 // TODO: use actual bench suite and export times for all problems and append to readme.
@@ -23,10 +23,10 @@ where
     let sum = (0..runs)
         .map(|_| {
             let (_, duration) = measure_execution(func, arg);
-            duration.num_nanoseconds().unwrap()
+            duration.as_secs() * 1_000_000_000 + u64::from(duration.subsec_nanos())
         })
-        .sum::<i64>();
-    let mut avg = sum / (runs as i64);
+        .sum::<u64>();
+    let mut avg = sum / (runs as u64);
     if avg > 1_000_000 {
         avg /= 1_000_000;
         println!("Averaged execution time over {} runs: {} ms.", runs, avg);

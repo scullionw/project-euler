@@ -1,4 +1,3 @@
-extern crate time;
 extern crate num_integer;
 extern crate fnv;
 
