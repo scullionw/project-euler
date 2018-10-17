@@ -36,6 +36,7 @@ mod bench {
     use super::*;
     extern crate test;
     use self::test::Bencher;
+    
     #[bench]
     fn bench_solve(b: &mut Bencher) {
         b.iter(|| solve(PROBLEM_INPUT));
