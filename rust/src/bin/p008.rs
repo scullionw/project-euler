@@ -1,5 +1,6 @@
-extern crate euler;
+#![cfg_attr(feature = "benchmode", feature(test))]
 
+extern crate euler;
 
 fn solve(seq: &str) -> u64 {
     seq .lines()
@@ -14,19 +15,29 @@ fn solve(seq: &str) -> u64 {
         .unwrap()
 }
 
+const PROBLEM_INPUT: &str = include_str!("data/p008_data.txt");
+
 fn main() {
-    let data = include_str!("data/p008_data.txt");
-    euler::go(solve, data);
-    euler::bench(solve, data, 10);
+    euler::go(solve, PROBLEM_INPUT);
+    euler::bench(solve, PROBLEM_INPUT, 10);
 }
 
 #[cfg(test)]
 mod tests {
-    
-
+    use super::*;
     #[test]
     fn correct_answer() {
-        let data = include_str!("data/p008_data.txt");
-        assert_eq!(super::solve(data), 23514624000);
+        assert_eq!(solve(PROBLEM_INPUT), 23514624000);
+    }
+}
+
+#[cfg(all(feature = "benchmode", test))]
+mod bench {
+    use super::*;
+    extern crate test;
+    use self::test::Bencher;
+    #[bench]
+    fn bench_solve(b: &mut Bencher) {
+        b.iter(|| solve(PROBLEM_INPUT));
     }
 }

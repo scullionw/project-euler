@@ -1,3 +1,5 @@
+#![cfg_attr(feature = "benchmode", feature(test))]
+
 extern crate euler;
 
 #[cfg(feature = "fp")]
@@ -28,15 +30,31 @@ fn solve(n: u64) -> u64 {
                     .sum()
 }
 
+
+const PROBLEM_INPUT: u64 = 4_000_000;
+
 fn main() {
-    euler::go(solve, 4_000_000);
-    euler::bench(solve, 4_000_000, 1000);
+    euler::go(solve, PROBLEM_INPUT);
+    euler::bench(solve, PROBLEM_INPUT, 1000);
 }
 
 #[cfg(test)]
 mod tests {
+    use super::*;
     #[test]
     fn correct_answer() {
-        assert_eq!(super::solve(4_000_000), 4613732)
+        assert_eq!(solve(PROBLEM_INPUT), 4613732)
+    }
+}
+
+#[cfg(all(feature = "benchmode", test))]
+mod bench {
+    use super::*;
+    extern crate test;
+    use self::test::Bencher;
+
+    #[bench]
+    fn bench_solve(b: &mut Bencher) {
+        b.iter(|| solve(PROBLEM_INPUT));
     }
 }

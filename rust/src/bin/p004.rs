@@ -1,3 +1,5 @@
+#![cfg_attr(feature = "benchmode", feature(test))]
+
 extern crate euler;
 
 fn solve(digits: u64) -> u64 {
@@ -18,6 +20,8 @@ fn solve(digits: u64) -> u64 {
    largest
 }
 
+const PROBLEM_INPUT: u64 = 3;
+
 fn main() {
     euler::go(solve, 3);
     euler::bench(solve, 3, 10);
@@ -25,12 +29,25 @@ fn main() {
 
 #[cfg(test)]
 mod tests {
+    use super::*;
     #[test]
     fn base_case() {
-        assert_eq!(super::solve(2), 9009);
+        assert_eq!(solve(2), 9009);
     }
     #[test]
     fn correct_answer() {
-        assert_eq!(super::solve(3), 906609);
+        assert_eq!(solve(PROBLEM_INPUT), 906609);
+    }
+}
+
+#[cfg(all(feature = "benchmode", test))]
+mod bench {
+    use super::*;
+    extern crate test;
+    use self::test::Bencher;
+
+    #[bench]
+    fn bench_solve(b: &mut Bencher) {
+        b.iter(|| solve(PROBLEM_INPUT));
     }
 }

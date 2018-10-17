@@ -55,5 +55,5 @@ where
 {
     let (answer, duration) = measure_execution(func, arg);
     let mode = if cfg!(feature = "fp") { "FP" } else { "Normal" };
-    println!("{}: {}, {:?}", mode, answer, duration);
+    println!("{}: {} in {:#?}.", mode, answer, duration);
 }

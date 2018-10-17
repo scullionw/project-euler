@@ -9,6 +9,7 @@ fnv = "1.0.6"
 
 [features]
 fp = []
+benchmode = []
 
 [profile.release]
 lto = true
