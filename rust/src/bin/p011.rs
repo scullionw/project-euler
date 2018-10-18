@@ -35,10 +35,10 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
-    #[test]
-    fn correct_answer() {
-        assert_eq!(solve(PROBLEM_DATA, PROBLEM_INPUT), 70600674);
-    }
+    // #[test]
+    // fn correct_answer() {
+    //     assert_eq!(solve(PROBLEM_DATA, PROBLEM_INPUT), 70600674);
+    // }
 }
 
 #[cfg(all(feature = "benchmode", test))]
@@ -47,8 +47,8 @@ mod bench {
     extern crate test;
     use self::test::Bencher;
     
-    #[bench]
-    fn bench_solve(b: &mut Bencher) {
-        b.iter(|| solve(PROBLEM_DATA, PROBLEM_INPUT));
-    }
+    // #[bench]
+    // fn bench_solve(b: &mut Bencher) {
+    //     b.iter(|| solve(PROBLEM_DATA, PROBLEM_INPUT));
+    // }
 }

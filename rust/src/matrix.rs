@@ -50,6 +50,10 @@ impl Matrix {
     pub fn rows(&self) -> Rows {
         Rows { current_row: 0, mat: &self } // maybe just self
     }
+
+    // pub fn rows_mut(&mut self) -> RowsMut {
+    //     RowsMut { current_row: 0, mat: &mut self }
+    // }
 }
 
 impl Index<(usize, usize)> for Matrix {
@@ -110,3 +114,22 @@ impl<'a> Iterator for Rows<'a> {
         }
     }
 }
+
+// pub struct RowsMut<'a> {
+//     current_row: usize,
+//     mat: &'a mut Matrix
+// }
+
+// impl<'a> Iterator for RowsMut<'a> {
+//     type Item = &'a mut [u64];
+
+//     fn next(&mut self) -> Option<Self::Item> {
+//         let index = self.current_row;
+//         if index != (self.mat.rows - 1) {
+//             self.current_row += 1;
+//             Some(self.mat.row_mut(index))
+//         } else {
+//             None
+//         }
+//     }
+// }
