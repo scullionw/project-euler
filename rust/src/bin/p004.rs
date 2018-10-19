@@ -23,8 +23,8 @@ fn solve(digits: u64) -> u64 {
 const PROBLEM_INPUT: u64 = 3;
 
 fn main() {
-    euler::go(solve, 3);
-    euler::bench(solve, 3, 10);
+    euler::go(solve, PROBLEM_INPUT);
+    euler::bench(solve, PROBLEM_INPUT, 10);
 }
 
 #[cfg(test)]

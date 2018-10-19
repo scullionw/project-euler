@@ -1,11 +1,15 @@
-use std::ops::{Index,IndexMut};
+use std::ops::{Index, IndexMut};
+use std::slice::{Chunks, ChunksMut};
+use std::mem;
 
-// Bench and compare version with Vec<Vec<u64>>
 pub struct Matrix {
     data: Vec<u64>,
     rows: usize,
     cols: usize,
 }
+
+type RowSlice<'a> = Chunks<'a, u64>;
+type RowSliceMut<'a> = ChunksMut<'a, u64>;
 
 impl Matrix {
     // impl into and from
@@ -15,6 +19,8 @@ impl Matrix {
     // make generic for anything
     // row and column structs
     // iters in each dir
+    // compare speed betweem Chunks and RowsMu
+    // compare speed between row-major and Vec<Vec<u64>>
     pub fn from_square_slice(data: &[u64], dim: usize) -> Matrix {
         assert!(data.len() == dim * dim);
 
@@ -25,35 +31,49 @@ impl Matrix {
         }
     }
 
-    pub fn row(&self, idx: usize) -> &[u64]{
+    pub fn row(&self, idx: usize) -> &[u64] {
         assert!(idx < self.rows);
         let begin = idx * self.cols;
         let end = begin + self.cols;
         &self.data[begin..end]
     }
 
-    pub fn row_mut(&mut self, idx: usize) -> &mut [u64]{
+    pub fn row_mut(&mut self, idx: usize) -> &mut [u64] {
         assert!(idx < self.rows);
         let begin = idx * self.cols;
         let end = begin + self.cols;
         &mut self.data[begin..end]
     }
 
-    pub fn height(&self) -> usize {
+    pub fn len_column(&self) -> usize {
         self.rows
     }
 
-    pub fn width(&self) -> usize {
+    pub fn len_row(&self) -> usize {
         self.cols
     }
 
     pub fn rows(&self) -> Rows {
-        Rows { current_row: 0, mat: &self } // maybe just self
+        Rows { current_row: 0, mat: self }
     }
 
-    // pub fn rows_mut(&mut self) -> RowsMut {
-    //     RowsMut { current_row: 0, mat: &mut self }
-    // }
+    // compare to rows
+    pub fn chunk_rows(&self) -> RowSlice {
+        self.data.chunks(self.cols)
+    }
+
+    pub fn rows_mut(&mut self) -> RowsMut {
+        RowsMut {
+            current_row: 0,
+            rows: self.rows,
+            cols: self.cols,
+            data: &mut self.data
+        }
+    }
+
+    pub fn chunk_rows_mut(&mut self) -> RowSliceMut {
+        self.data.chunks_mut(self.cols)
+    }
 }
 
 impl Index<(usize, usize)> for Matrix {
@@ -100,13 +120,12 @@ pub struct Rows<'a> {
     mat: &'a Matrix
 }
 
-// make mut version?
 impl<'a> Iterator for Rows<'a> {
     type Item = &'a [u64];
 
     fn next(&mut self) -> Option<Self::Item> {
         let index = self.current_row;
-        if index != (self.mat.rows - 1) {
+        if index != self.mat.rows {
             self.current_row += 1;
             Some(self.mat.row(index))
         } else {
@@ -115,21 +134,26 @@ impl<'a> Iterator for Rows<'a> {
     }
 }
 
-// pub struct RowsMut<'a> {
-//     current_row: usize,
-//     mat: &'a mut Matrix
-// }
+pub struct RowsMut<'a> {
+    current_row: usize,
+    rows: usize,
+    cols: usize,
+    data: &'a mut [u64],
+}
 
-// impl<'a> Iterator for RowsMut<'a> {
-//     type Item = &'a mut [u64];
+impl<'a> Iterator for RowsMut<'a> {
+    type Item = &'a mut [u64];
 
-//     fn next(&mut self) -> Option<Self::Item> {
-//         let index = self.current_row;
-//         if index != (self.mat.rows - 1) {
-//             self.current_row += 1;
-//             Some(self.mat.row_mut(index))
-//         } else {
-//             None
-//         }
-//     }
-// }
+    fn next(&mut self) -> Option<Self::Item> {
+        let index = self.current_row;
+        if index != self.rows {
+            let extracted = mem::replace(&mut self.data, &mut []);
+            let (head, tail) = extracted.split_at_mut(self.cols);
+            self.data = tail;
+            self.current_row += 1;
+            Some(head)
+        } else {
+            None
+        }
+    }
+}

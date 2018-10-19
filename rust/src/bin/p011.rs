@@ -10,17 +10,11 @@ fn solve(seq: &str, _n: usize) {
                     .collect::<Vec<u64>>();
 
     
-    let mat = Matrix::from_square_slice(&data, 20); // abstract out dims
-    
-    // let piece = [11, 22, 33, 40, 17, 81, 18, 57, 60, 87, 17, 40, 98, 43, 69, 48, 4, 56, 62, 0];
+    let mut mat = Matrix::from_square_slice(&data, 20); // abstract out dims
 
-    // mat[1].copy_from_slice(&piece);
-
-    // println!("{:?}", mat.row(1));
-
-    for row in mat.rows() {
+    for row in mat.chunk_rows_mut() {
         println!("{:?}", row);
-    }   
+    }
 }
 
 const PROBLEM_DATA: &str = include_str!("data/p011_data.txt");
