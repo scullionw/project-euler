@@ -10,10 +10,14 @@ fn solve(seq: &str, _n: usize) {
                     .collect::<Vec<u64>>();
 
     
-    let mut mat = Matrix::from_square_slice(&data, 20); // abstract out dims
+    let mat = Matrix::from_square_slice(&data, 20);
 
-    for row in mat.chunk_rows_mut() {
+    for row in mat.chunk_rows() {
         println!("{:?}", row);
+    }
+
+    for diag in mat.upper_diagonals() {
+        println!("{:?}", diag);
     }
 }
 

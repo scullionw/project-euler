@@ -1,6 +1,7 @@
 use std::ops::{Index, IndexMut};
 use std::slice::{Chunks, ChunksMut};
 use std::mem;
+use std::vec::IntoIter;
 
 pub struct Matrix {
     data: Vec<u64>,
@@ -19,7 +20,7 @@ impl Matrix {
     // make generic for anything
     // row and column structs
     // iters in each dir
-    // compare speed betweem Chunks and RowsMu
+    // compare speed betweem Chunks and RowsMut
     // compare speed between row-major and Vec<Vec<u64>>
     pub fn from_square_slice(data: &[u64], dim: usize) -> Matrix {
         assert!(data.len() == dim * dim);
@@ -57,7 +58,6 @@ impl Matrix {
         Rows { current_row: 0, mat: self }
     }
 
-    // compare to rows
     pub fn chunk_rows(&self) -> RowSlice {
         self.data.chunks(self.cols)
     }
@@ -74,7 +74,27 @@ impl Matrix {
     pub fn chunk_rows_mut(&mut self) -> RowSliceMut {
         self.data.chunks_mut(self.cols)
     }
+
+    pub fn upper_diagonals(&self) -> UpperDiagonals {
+        assert!(self.cols == self.rows); // specialize for square matrix only..
+        let first_half = (0..self.cols) .map(|m| (0..=m).map(move |n| (m - n, n))
+                                                        .map(|(row, col)| row*self.cols + col)
+                                                        .collect::<Vec<_>>())
+                                        .collect::<Vec<_>>();
+                                
+        let second_half = (0..self.cols).map(|m| (0..=m).map(move |n| ((self.cols - 1) - n, (self.cols - 1) - (m - n)))
+                                                        .map(|(row, col)| row*self.cols + col)
+                                                        .collect::<Vec<_>>())
+                                        .rev()
+                                        .skip(1)
+                                        .collect::<Vec<_>>();
+    
+        let indexes = first_half.into_iter().chain(second_half.into_iter()).collect::<Vec<_>>().into_iter(); // make iterator instead
+
+        UpperDiagonals { indexes, data: &self.data }
+    }
 }
+
 
 impl Index<(usize, usize)> for Matrix {
     type Output = u64;
@@ -154,6 +174,33 @@ impl<'a> Iterator for RowsMut<'a> {
             Some(head)
         } else {
             None
+        }
+    }
+}
+
+pub struct Diagonal<'a> {
+    mat: &'a Matrix
+}
+
+pub struct UpperDiagonals<'a> {
+    indexes: IntoIter<Vec<usize>>,
+    data: &'a [u64]
+}
+
+impl<'a> Iterator for UpperDiagonals<'a> {
+    type Item = Vec<&'a u64>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        match self.indexes.next() {
+            Some(idxs) => {
+                let view = self.data.iter()
+                                    .enumerate()
+                                    .filter(|(i, _)| idxs.contains(i))
+                                    .map(|(_, x)| x)
+                                    .collect::<Vec<&u64>>();
+                Some(view)
+            },
+            None => None
         }
     }
 }
