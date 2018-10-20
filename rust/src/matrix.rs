@@ -220,7 +220,7 @@ impl<'a> Iterator for Diagonals<'a> {
     fn next(&mut self) -> Option<Self::Item> {
         match self.indexes.next() {
             Some(idxs) => {
-                let view = idxs.into_iter().map(|idx| self.mat[idx]).collect::<Vec<u64>>();
+                let view = idxs.into_iter().map(|idx| self.mat[idx]).collect::<Vec<_>>();
                 Some(view)
             },
             None => None

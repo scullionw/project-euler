@@ -161,7 +161,7 @@ mod tests {
 
     #[test]
     fn test_prime_sequence () {
-        assert_eq!(super::PrimeSequence::new().take(8).collect::<Vec<u64>>(), vec![2,3,5,7,11,13,17,19]);
+        assert_eq!(super::PrimeSequence::new().take(8).collect::<Vec<_>>(), vec![2,3,5,7,11,13,17,19]);
     }
 
     fn poly(x: u64) -> u64 {

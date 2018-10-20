@@ -3,11 +3,12 @@
 extern crate euler;
 use euler::Matrix;
 
+// TODO: try just Vec<Vec>
 fn solve(seq: &str, n: usize) -> u64 {
     let data = seq  .lines()
                     .flat_map(|line| line.split_whitespace())
-                    .map(|s| s.parse::<u64>().unwrap())
-                    .collect::<Vec<u64>>();
+                    .map(|s| s.parse().unwrap())
+                    .collect::<Vec<_>>();
 
     
     Matrix::from_square_slice(&data, 20)
