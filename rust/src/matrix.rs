@@ -11,6 +11,8 @@ pub struct Matrix {
 
 type RowSlice<'a> = Chunks<'a, u64>;
 type RowSliceMut<'a> = ChunksMut<'a, u64>;
+type Diagonal<'a> = Vec<u64>; 
+type Column<'a> = Vec<u64>;
 
 impl Matrix {
     // impl into and from
@@ -75,15 +77,13 @@ impl Matrix {
         self.data.chunks_mut(self.cols)
     }
 
-    pub fn upper_diagonals(&self) -> UpperDiagonals {
+    pub fn upper_diagonals(&self) -> Diagonals {
         assert!(self.cols == self.rows); // specialize for square matrix only..
         let first_half = (0..self.cols) .map(|m| (0..=m).map(move |n| (m - n, n))
-                                                        .map(|(row, col)| row*self.cols + col)
                                                         .collect::<Vec<_>>())
                                         .collect::<Vec<_>>();
                                 
         let second_half = (0..self.cols).map(|m| (0..=m).map(move |n| ((self.cols - 1) - n, (self.cols - 1) - (m - n)))
-                                                        .map(|(row, col)| row*self.cols + col)
                                                         .collect::<Vec<_>>())
                                         .rev()
                                         .skip(1)
@@ -91,7 +91,38 @@ impl Matrix {
     
         let indexes = first_half.into_iter().chain(second_half.into_iter()).collect::<Vec<_>>().into_iter(); // make iterator instead
 
-        UpperDiagonals { indexes, data: &self.data }
+        Diagonals { indexes, mat: self }
+    }
+
+    pub fn lower_diagonals(&self) -> Diagonals {
+        // use by_ref
+        assert!(self.cols == self.rows); // specialize for square matrix only..
+        let first_half = (0..self.cols) .rev()
+                                        .map(|m| (0..(self.cols - m))   .map(move |n| (n, m + n))
+                                                                        .collect::<Vec<_>>())
+                                        .collect::<Vec<_>>();
+                                
+        let second_half = (0..self.cols).rev()
+                                        .map(|m| (0..(self.cols - m))   .map(move |n| (m + n, n))
+                                                                        .collect::<Vec<_>>())
+                                        .rev()
+                                        .skip(1)
+                                        .collect::<Vec<_>>();
+    
+        let indexes = first_half.into_iter().chain(second_half.into_iter()).collect::<Vec<_>>().into_iter();
+
+        Diagonals { indexes, mat: self }
+    }
+
+    pub fn columns(&self) -> Columns {
+
+        
+        let indexes = (0..self.cols).map(|m| (0..self.cols) .map(|n| (n, m))
+                                                            .collect::<Vec<_>>())
+                                    .collect::<Vec<_>>()
+                                    .into_iter();
+
+        Columns { indexes, mat: self }
     }
 }
 
@@ -178,26 +209,37 @@ impl<'a> Iterator for RowsMut<'a> {
     }
 }
 
-pub struct Diagonal<'a> {
+pub struct Diagonals<'a> {
+    indexes: IntoIter<Vec<(usize, usize)>>,
     mat: &'a Matrix
 }
 
-pub struct UpperDiagonals<'a> {
-    indexes: IntoIter<Vec<usize>>,
-    data: &'a [u64]
-}
-
-impl<'a> Iterator for UpperDiagonals<'a> {
-    type Item = Vec<&'a u64>;
+impl<'a> Iterator for Diagonals<'a> {
+    type Item = Diagonal<'a>;
 
     fn next(&mut self) -> Option<Self::Item> {
         match self.indexes.next() {
             Some(idxs) => {
-                let view = self.data.iter()
-                                    .enumerate()
-                                    .filter(|(i, _)| idxs.contains(i))
-                                    .map(|(_, x)| x)
-                                    .collect::<Vec<&u64>>();
+                let view = idxs.into_iter().map(|idx| self.mat[idx]).collect::<Vec<u64>>();
+                Some(view)
+            },
+            None => None
+        }
+    }
+}
+
+pub struct Columns<'a> {
+    indexes: IntoIter<Vec<(usize, usize)>>,
+    mat: &'a Matrix
+}
+
+impl<'a> Iterator for Columns<'a> {
+    type Item = Column<'a>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        match self.indexes.next() {
+            Some(idxs) => {
+                let view = idxs.into_iter().map(|idx| self.mat[idx]).collect::<Vec<u64>>();
                 Some(view)
             },
             None => None
