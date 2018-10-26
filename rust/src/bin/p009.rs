@@ -30,8 +30,7 @@ mod fp {
         let n_halved = n / 2;
 
         let (b, a) = (1..=n_halved)
-            .map(|b| (1..=b).map(move |a| (b, a)))
-            .flatten()
+            .flat_map(|b| (1..=b).map(move |a| (b, a)))
             .find(|(b, a)| n_doubled * (a + b) - (2 * a * b) == n_squared)
             .unwrap();
 

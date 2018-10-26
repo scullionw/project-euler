@@ -6,7 +6,7 @@ fn solve(n: u64) -> u64 {
     let mut candidate = n;
     let divisors = generate_useful_divisors(n);
     'outer: loop {
-        for divisor in divisors.iter() {
+        for divisor in &divisors {
             if candidate % divisor != 0 {
                 candidate += n;
                 continue 'outer;

@@ -113,20 +113,17 @@ impl PrimeSequence {
         loop {
             let candidate = self.candidate;
             self.candidate += 2;
-            match self.first_prime_factor.remove(&candidate) {
-                Some(factor) => {
-                    let mut next_multiple = factor + candidate;
-                    while next_multiple % 2 == 0
-                        || self.first_prime_factor.contains_key(&next_multiple)
-                    {
-                        next_multiple += factor;
-                    }
-                    self.first_prime_factor.insert(next_multiple, factor);
+            if let Some(factor) = self.first_prime_factor.remove(&candidate) {
+                let mut next_multiple = factor + candidate;
+                while next_multiple % 2 == 0
+                    || self.first_prime_factor.contains_key(&next_multiple)
+                {
+                    next_multiple += factor;
                 }
-                None => {
-                    self.first_prime_factor.insert(candidate.pow(2), candidate);
-                    break Some(candidate);
-                }
+                self.first_prime_factor.insert(next_multiple, factor);
+            } else {
+                self.first_prime_factor.insert(candidate.pow(2), candidate);
+                break Some(candidate);
             }
         }
     }

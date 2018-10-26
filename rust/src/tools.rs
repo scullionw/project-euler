@@ -24,7 +24,7 @@ pub fn black_box<T>(dummy: T) -> T {
 
 // TODO: use actual bench suite and export times for all problems and append to readme.
 // use black box, calculate total time of all iterations. Not every iter.
-pub fn bench<I, F, O>(func: F, arg: I, runs: i64)
+pub fn bench<I, F, O>(func: F, arg: I, runs: u64)
 where
     I: Copy,
     F: Fn(I) -> O + Copy,
@@ -35,7 +35,7 @@ where
             duration.as_secs() * 1_000_000_000 + u64::from(duration.subsec_nanos())
         })
         .sum::<u64>();
-    let mut avg = sum / (runs as u64);
+    let mut avg = sum / runs;
     if avg > 1_000_000 {
         avg /= 1_000_000;
         println!("Averaged execution time over {} runs: {} ms.", runs, avg);
