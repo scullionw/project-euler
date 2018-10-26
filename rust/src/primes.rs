@@ -115,8 +115,7 @@ impl PrimeSequence {
             self.candidate += 2;
             if let Some(factor) = self.first_prime_factor.remove(&candidate) {
                 let mut next_multiple = factor + candidate;
-                while next_multiple % 2 == 0
-                    || self.first_prime_factor.contains_key(&next_multiple)
+                while next_multiple % 2 == 0 || self.first_prime_factor.contains_key(&next_multiple)
                 {
                     next_multiple += factor;
                 }
