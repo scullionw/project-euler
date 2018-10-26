@@ -7,9 +7,8 @@ mod fp {
         let sum_of_squares = (1..=n).map(|x| x.pow(2)).sum::<u64>();
         let square_of_sum = (1..=n).sum::<u64>().pow(2);
         square_of_sum - sum_of_squares
-    }   
+    }
 }
-
 
 mod classic {
     pub fn solve(n: u64) -> u64 {
@@ -20,9 +19,8 @@ mod classic {
             sum_of_squares += i.pow(2);
         }
         sum.pow(2) - sum_of_squares
-    }    
+    }
 }
-
 
 const PROBLEM_INPUT: u64 = 100;
 
@@ -56,7 +54,7 @@ mod bench {
     fn bench_classic(b: &mut Bencher) {
         b.iter(|| classic::solve(PROBLEM_INPUT))
     }
-        #[bench]
+    #[bench]
     fn bench_fp(b: &mut Bencher) {
         b.iter(|| fp::solve(PROBLEM_INPUT))
     }

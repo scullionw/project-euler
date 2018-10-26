@@ -3,11 +3,11 @@
 extern crate euler;
 
 fn solve(digits: u64) -> u64 {
-   let start = 10_u64.pow(digits as u32 - 1);
-   let end = 10_u64.pow(digits as u32);
-   let mut largest = 0;
-   for x in start..end {
-       for y in x..end {
+    let start = 10_u64.pow(digits as u32 - 1);
+    let end = 10_u64.pow(digits as u32);
+    let mut largest = 0;
+    for x in start..end {
+        for y in x..end {
             let product = x * y;
             if product > largest {
                 let repr = product.to_string();
@@ -15,9 +15,9 @@ fn solve(digits: u64) -> u64 {
                     largest = product;
                 }
             }
-       }
-   }
-   largest
+        }
+    }
+    largest
 }
 
 const PROBLEM_INPUT: u64 = 3;

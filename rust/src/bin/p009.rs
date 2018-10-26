@@ -13,7 +13,7 @@ mod classic {
         'net: loop {
             for b in 1..=n_halved {
                 for a in 1..b {
-                    if n_doubled * (a + b) - (2 * a * b)  == n_squared {
+                    if n_doubled * (a + b) - (2 * a * b) == n_squared {
                         break 'net a * b * (1000 - a - b);
                     }
                 }
@@ -22,7 +22,6 @@ mod classic {
         }
     }
 }
-
 
 mod fp {
     pub fn solve(n: u64) -> u64 {
@@ -33,7 +32,7 @@ mod fp {
         let (b, a) = (1..=n_halved)
             .map(|b| (1..=b).map(move |a| (b, a)))
             .flatten()
-            .find(|(b, a)| n_doubled * (a + b) - (2 * a * b)  == n_squared)
+            .find(|(b, a)| n_doubled * (a + b) - (2 * a * b) == n_squared)
             .unwrap();
 
         a * b * (n - a - b)

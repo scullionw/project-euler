@@ -16,17 +16,18 @@ mod classic {
             b = temp_a + b;
         }
         sum
-    }    
+    }
 }
 
 mod fp {
     use euler::Fibonnaci;
 
     pub fn solve(n: u64) -> u64 {
-        Fibonnaci::new().take_while(|&x| x < n)
-                        .filter(|&x| x % 2 == 0)
-                        .sum()
-    }    
+        Fibonnaci::new()
+            .take_while(|&x| x < n)
+            .filter(|&x| x % 2 == 0)
+            .sum()
+    }
 }
 
 const PROBLEM_INPUT: u64 = 4_000_000;

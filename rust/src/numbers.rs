@@ -1,11 +1,14 @@
 pub struct Fibonnaci {
     prev: u64,
-    current: u64
+    current: u64,
 }
 
 impl Fibonnaci {
     pub fn new() -> Fibonnaci {
-        Fibonnaci { prev: 0, current: 1 }
+        Fibonnaci {
+            prev: 0,
+            current: 1,
+        }
     }
 }
 
@@ -19,7 +22,6 @@ impl Iterator for Fibonnaci {
         Some(next)
     }
 }
-
 
 pub fn div_mod(n: u64, divisor: u64) -> (u64, u64) {
     let quotient = n / divisor;

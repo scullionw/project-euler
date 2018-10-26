@@ -3,7 +3,7 @@
 extern crate euler;
 
 fn solve(seq: &str, n: usize) -> u64 {
-    seq .chars()
+    seq.chars()
         .filter_map(|x| x.to_digit(10).map(|x| x as u64))
         .collect::<Vec<_>>()
         .windows(n)
@@ -23,7 +23,7 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
-        #[test]
+    #[test]
     fn base_case() {
         assert_eq!(solve(PROBLEM_DATA, 4), 5832);
     }
@@ -38,7 +38,7 @@ mod bench {
     use super::*;
     extern crate test;
     use self::test::Bencher;
-    
+
     #[bench]
     fn bench_solve(b: &mut Bencher) {
         b.iter(|| solve(PROBLEM_DATA, PROBLEM_INPUT));

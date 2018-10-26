@@ -5,20 +5,20 @@ use euler::Matrix;
 
 // TODO: try just Vec<Vec>
 fn solve(seq: &str, n: usize) -> u64 {
-    let data = seq  .lines()
-                    .flat_map(|line| line.split_whitespace())
-                    .map(|s| s.parse().unwrap())
-                    .collect::<Vec<_>>();
+    let data = seq
+        .lines()
+        .flat_map(|line| line.split_whitespace())
+        .map(|s| s.parse().unwrap())
+        .collect::<Vec<_>>();
 
-    
     Matrix::from_square_slice(&data, 20)
-                            .upper_diagonals()
-                            .collect::<Vec<_>>()
-                            .iter()
-                            .flat_map(|slice| slice.windows(n))
-                            .map(|window| window.iter().product())
-                            .max()
-                            .unwrap()
+        .upper_diagonals()
+        .collect::<Vec<_>>()
+        .iter()
+        .flat_map(|slice| slice.windows(n))
+        .map(|window| window.iter().product())
+        .max()
+        .unwrap()
 }
 
 const PROBLEM_DATA: &str = include_str!("data/p011_data.txt");
@@ -43,7 +43,7 @@ mod bench {
     use super::*;
     extern crate test;
     use self::test::Bencher;
-    
+
     #[bench]
     fn bench_solve(b: &mut Bencher) {
         b.iter(|| solve(PROBLEM_DATA, PROBLEM_INPUT));

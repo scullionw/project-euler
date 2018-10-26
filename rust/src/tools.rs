@@ -6,7 +6,7 @@ use std::time::Duration;
 fn measure_execution<I, F, O>(func: F, arg: I) -> (O, Duration)
 where
     I: Copy,
-    F: Fn(I) -> O + Copy
+    F: Fn(I) -> O + Copy,
 {
     let start = std::time::Instant::now();
     let answer = black_box(func(arg));
@@ -27,7 +27,7 @@ pub fn black_box<T>(dummy: T) -> T {
 pub fn bench<I, F, O>(func: F, arg: I, runs: i64)
 where
     I: Copy,
-    F: Fn(I) -> O + Copy
+    F: Fn(I) -> O + Copy,
 {
     let sum = (0..runs)
         .map(|_| {
@@ -51,7 +51,7 @@ pub fn go<I, F, O>(func: F, arg: I)
 where
     I: Copy,
     O: std::fmt::Display,
-    F: Fn(I) -> O + Copy
+    F: Fn(I) -> O + Copy,
 {
     let (answer, duration) = measure_execution(func, arg);
     let mode = if cfg!(feature = "fp") { "FP" } else { "Normal" };

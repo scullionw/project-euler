@@ -1,13 +1,13 @@
-extern crate num_integer;
 extern crate fnv;
+extern crate num_integer;
 
-mod numbers;
-mod tools;
-mod primes;
 mod matrix;
+mod numbers;
+mod primes;
+mod tools;
 
-pub use tools::*;
+pub use matrix::*;
+pub use num_integer::gcd;
 pub use numbers::*;
 pub use primes::*;
-pub use num_integer::gcd;
-pub use matrix::*;
+pub use tools::*;
