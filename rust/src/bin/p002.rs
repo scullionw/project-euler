@@ -11,9 +11,9 @@ mod classic {
             if b % 2 == 0 {
                 sum += b;
             }
-            let temp_a = a;
+            let old_a = a;
             a = b;
-            b = temp_a + b;
+            b += old_a;
         }
         sum
     }

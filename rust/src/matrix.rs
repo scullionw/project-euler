@@ -262,7 +262,7 @@ impl<'a> Iterator for Columns<'a> {
                 let view = idxs
                     .into_iter()
                     .map(|idx| self.mat[idx])
-                    .collect::<Vec<u64>>();
+                    .collect::<Vec<_>>();
                 Some(view)
             }
             None => None,

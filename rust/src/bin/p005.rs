@@ -22,7 +22,7 @@ fn generate_useful_divisors(n: u64) -> Vec<u64> {
     let mut candidates = (2..n).collect::<Vec<_>>();
     candidates.retain(|&x| n % x != 0);
 
-    while candidates.len() > 0 {
+    while !candidates.is_empty() {
         let last = candidates.pop().unwrap();
         confirmed.push(last);
         candidates.retain(|&x| last % x != 0);

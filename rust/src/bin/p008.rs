@@ -4,7 +4,7 @@ extern crate euler;
 
 fn solve(seq: &str, n: usize) -> u64 {
     seq.chars()
-        .filter_map(|x| x.to_digit(10).map(|x| x as u64))
+        .filter_map(|x| x.to_digit(10).map(u64::from))
         .collect::<Vec<_>>()
         .windows(n)
         .map(|x| x.iter().product())
