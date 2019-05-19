@@ -1,6 +1,9 @@
-#![cfg_attr(feature = "benchmode", feature(test))]
+#![feature(test)]
 
-extern crate euler;
+use benchtest::benchtest;
+
+const BASE_CASE_INPUT: u64 = 10;
+const PROBLEM_INPUT: u64 = 20;
 
 fn solve(n: u64) -> u64 {
     let mut candidate = n;
@@ -30,34 +33,11 @@ fn generate_useful_divisors(n: u64) -> Vec<u64> {
     confirmed
 }
 
-const PROBLEM_INPUT: u64 = 20;
-
 fn main() {
-    euler::go(solve, PROBLEM_INPUT);
-    euler::bench(solve, PROBLEM_INPUT, 10);
+    println!("{:?}", solve(PROBLEM_INPUT));
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-    #[test]
-    fn base_case() {
-        assert_eq!(solve(10), 2520);
-    }
-    #[test]
-    fn correct_answer() {
-        assert_eq!(solve(PROBLEM_INPUT), 232792560);
-    }
-}
-
-#[cfg(all(feature = "benchmode", test))]
-mod bench {
-    use super::*;
-    extern crate test;
-    use self::test::Bencher;
-
-    #[bench]
-    fn bench_solve(b: &mut Bencher) {
-        b.iter(|| solve(PROBLEM_INPUT));
-    }
+benchtest! {
+    base_case: solve(BASE_CASE_INPUT) => 2520,
+    problem_solve: solve(PROBLEM_INPUT) => 232792560
 }

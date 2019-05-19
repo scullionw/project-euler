@@ -1,5 +1,5 @@
 use fnv::FnvBuildHasher;
-use gcd;
+use num_integer::gcd;
 use std::cmp::{max, min};
 use std::collections::HashMap;
 

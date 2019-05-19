@@ -2,13 +2,12 @@
 name = "euler"
 version = "0.1.0"
 authors = ["scullionw <scuw1801@usherbrooke.ca>"]
+edition = "2018"
 
 [dependencies]
-num-integer = "0.1"
+num-integer = "0.1.39"
 fnv = "1.0.6"
-
-[features]
-benchmode = []
+benchtest = "0.1.1"
 
 [profile.release]
 lto = true

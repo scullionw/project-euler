@@ -1,6 +1,10 @@
-#![cfg_attr(feature = "benchmode", feature(test))]
+#![feature(test)]
 
-extern crate euler;
+use benchtest::benchtest;
+
+const BASE_CASE_INPUT: usize = 4;
+const PROBLEM_INPUT: usize = 13;
+const PROBLEM_DATA: &str = include_str!("data/p008_data.txt");
 
 fn solve(seq: &str, n: usize) -> u64 {
     seq.chars()
@@ -12,35 +16,11 @@ fn solve(seq: &str, n: usize) -> u64 {
         .unwrap()
 }
 
-const PROBLEM_INPUT: usize = 13;
-const PROBLEM_DATA: &str = include_str!("data/p008_data.txt");
-
 fn main() {
-    euler::go(|n| solve(PROBLEM_DATA, n), PROBLEM_INPUT);
-    euler::bench(|n| solve(PROBLEM_DATA, n), PROBLEM_INPUT, 10);
+    println!("{:?}", solve(PROBLEM_DATA, PROBLEM_INPUT));
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-    #[test]
-    fn base_case() {
-        assert_eq!(solve(PROBLEM_DATA, 4), 5832);
-    }
-    #[test]
-    fn correct_answer() {
-        assert_eq!(solve(PROBLEM_DATA, PROBLEM_INPUT), 23514624000);
-    }
-}
-
-#[cfg(all(feature = "benchmode", test))]
-mod bench {
-    use super::*;
-    extern crate test;
-    use self::test::Bencher;
-
-    #[bench]
-    fn bench_solve(b: &mut Bencher) {
-        b.iter(|| solve(PROBLEM_DATA, PROBLEM_INPUT));
-    }
+benchtest! {
+    base_case: solve(PROBLEM_DATA, BASE_CASE_INPUT) => 5832,
+    problem_solve: solve(PROBLEM_DATA, PROBLEM_INPUT) => 23514624000
 }

@@ -1,4 +1,3 @@
-use std;
 use std::time::Duration;
 
 // TODO: try passing a closure like Duration::span to avoid
