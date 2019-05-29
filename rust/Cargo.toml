@@ -7,7 +7,7 @@ edition = "2018"
 [dependencies]
 num-integer = "0.1.39"
 fnv = "1.0.6"
-benchtest = "0.1.1"
+benchtest = { path = "../../benchtest"}
 
 [profile.release]
 lto = true
