@@ -1,25 +1,35 @@
-pub struct Fibonnaci {
+use std::mem;
+use std::iter;
+
+pub struct Fibonacci {
     prev: u64,
     current: u64,
 }
 
-impl Fibonnaci {
-    pub fn new() -> Fibonnaci {
-        Fibonnaci {
+impl Fibonacci {
+    pub fn new() -> Self {
+        Self {
             prev: 0,
             current: 1,
         }
     }
+
+    pub fn seq() -> impl Iterator<Item = u64> {
+        let mut a = 0;
+        let mut b = 1;
+        iter::repeat_with(move || {
+            b += mem::replace(&mut a, b);
+            b
+    })
+}
 }
 
-impl Iterator for Fibonnaci {
+impl Iterator for Fibonacci {
     type Item = u64;
 
     fn next(&mut self) -> Option<Self::Item> {
-        let next = self.prev + self.current;
-        self.prev = self.current;
-        self.current = next;
-        Some(next)
+        self.current += mem::replace(&mut self.prev, self.current);
+        Some(self.current)
     }
 }
 

@@ -1,6 +1,6 @@
 #![feature(test)]
 
-use benchtest::{bench, benchtest};
+use benchtest::*;
 
 const BASE_CASE_INPUT: u64 = 5;
 const PROBLEM_INPUT: u64 = 500;

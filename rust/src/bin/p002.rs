@@ -1,28 +1,26 @@
 #![feature(test)]
 
 use benchtest::benchtest;
+use euler::Fibonacci;
+use std::mem;
 
 const PROBLEM_INPUT: u64 = 4_000_000;
 
 pub fn solve_classic(n: u64) -> u64 {
-    let mut a = 1;
-    let mut b = 2;
+    let mut a = 0;
+    let mut b = 1;
     let mut sum = 0;
     while b < n {
         if b % 2 == 0 {
             sum += b;
         }
-        let old_a = a;
-        a = b;
-        b += old_a;
+        b += mem::replace(&mut a, b);
     }
     sum
 }
 
-use euler::Fibonnaci;
-
 pub fn solve_fp(n: u64) -> u64 {
-    Fibonnaci::new()
+    Fibonacci::seq()
         .take_while(|&x| x < n)
         .filter(|&x| x % 2 == 0)
         .sum()
