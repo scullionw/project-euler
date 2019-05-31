@@ -1,6 +1,7 @@
 #![feature(test)]
 
 use benchtest::*;
+use std::iter;
 
 const PROBLEM_INPUT: u64 = 1_000_000;
 

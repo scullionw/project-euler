@@ -1,5 +1,5 @@
-use std::mem;
 use std::iter;
+use std::mem;
 
 pub struct Fibonacci {
     prev: u64,
@@ -20,8 +20,8 @@ impl Fibonacci {
         iter::repeat_with(move || {
             b += mem::replace(&mut a, b);
             b
-    })
-}
+        })
+    }
 }
 
 impl Iterator for Fibonacci {
