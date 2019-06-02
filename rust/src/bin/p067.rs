@@ -4,7 +4,7 @@ use benchtest::*;
 use std::cmp;
 
 const BASE_CASE_DATA: &str = include_str!("data/p018_base_data.txt");
-const PROBLEM_DATA: &str = include_str!("data/p018_data.txt");
+const PROBLEM_DATA: &str = include_str!("data/p067_data.txt");
 
 fn solve(seq: &str) -> u32 {
     let mut data = vec![];
@@ -48,5 +48,5 @@ fn main() {
 
 benchtest! {
     base_case: solve(BASE_CASE_DATA) => 23,
-    problem_solve: solve(PROBLEM_DATA) => 1074
+    problem_solve: solve(PROBLEM_DATA) => 7273
 }
