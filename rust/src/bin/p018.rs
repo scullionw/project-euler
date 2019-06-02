@@ -19,7 +19,6 @@ fn solve(seq: &str) -> u32 {
     max_collapse(&mut data)
 }
 
-// Bottom up
 fn max_collapse(data: &mut Vec<Vec<u32>>) -> u32 {
     for row in (0..data.len() - 1).rev() {
         for col in 0..data[row].len() {
@@ -27,19 +26,6 @@ fn max_collapse(data: &mut Vec<Vec<u32>>) -> u32 {
         }
     }
     data[0][0]
-}
-
-// Brute force
-fn max_chain_sum(data: &Vec<Vec<u32>>, row: usize, col: usize) -> u32 {
-    if row + 1 < data.len() {
-        data[row][col]
-            + cmp::max(
-                max_chain_sum(data, row + 1, col),
-                max_chain_sum(data, row + 1, col + 1),
-            )
-    } else {
-        data[row][col]
-    }
 }
 
 fn main() {
