@@ -1,7 +1,6 @@
 #![feature(test)]
 
 use benchtest::benchtest;
-use euler::Fibonacci;
 use std::mem;
 
 const PROBLEM_INPUT: u64 = 4_000_000;
@@ -20,14 +19,14 @@ pub fn solve_classic(n: u64) -> u64 {
 }
 
 pub fn solve_fp(n: u64) -> u64 {
-    Fibonacci::seq()
+    euler::fibonacci()
         .take_while(|&x| x < n)
         .filter(|&x| x % 2 == 0)
         .sum()
 }
 
 fn main() {
-    println!("{:?}", solve_classic(PROBLEM_INPUT));
+    println!("{:?}", solve_fp(PROBLEM_INPUT));
 }
 
 benchtest! {

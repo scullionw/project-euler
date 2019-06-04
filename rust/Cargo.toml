@@ -10,6 +10,7 @@ fnv = "1.0.6"
 benchtest = { path = "../../benchtest"}
 num-traits = "0.2.8"
 num-bigint = "0.2.2"
+ramp = "0.5.1"
 
 [profile.release]
 lto = true

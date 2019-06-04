@@ -9,7 +9,7 @@ fn solve() -> usize {
         .iter()
         .filter(|d| d.year >= 1901 && d.month >= Month::January && d.day >= 1)
         .take_while(|d| d.year <= 2000 && d.month <= Month::December && d.day <= 31)
-        .filter(|d| d.dotw == WeekDay::Sunday && d.day == 1)
+        .filter(|d| d.dotw == Weekday::Sunday && d.day == 1)
         .count()
 }
 
@@ -18,7 +18,7 @@ struct Date {
     year: u32,
     month: Month,
     day: u32,
-    dotw: WeekDay,
+    dotw: Weekday,
 }
 
 impl Date {
@@ -27,7 +27,7 @@ impl Date {
             year: 1900,
             month: Month::January,
             day: 1,
-            dotw: WeekDay::Monday,
+            dotw: Weekday::Monday,
         }
     }
     fn iter(mut self) -> impl Iterator<Item = Date> {
@@ -59,7 +59,7 @@ impl Date {
 }
 
 #[derive(Debug, Eq, PartialEq, Copy, Clone)]
-enum WeekDay {
+enum Weekday {
     Monday,
     Tuesday,
     Wednesday,
@@ -69,9 +69,9 @@ enum WeekDay {
     Sunday,
 }
 
-impl WeekDay {
-    fn next(&self) -> WeekDay {
-        use WeekDay::*;
+impl Weekday {
+    fn next(&self) -> Weekday {
+        use Weekday::*;
         match self {
             Monday => Tuesday,
             Tuesday => Wednesday,
