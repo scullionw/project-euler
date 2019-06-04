@@ -2,16 +2,16 @@
 
 use benchtest::*;
 use euler::BigNum;
-use num_bigint::{BigInt, ToBigInt, BigUint};
+use num_bigint::{BigInt, BigUint, ToBigInt};
+use num_traits::identities::One;
 use ramp::Int;
 use std::ops::{Mul, MulAssign};
-use num_traits::identities::One;
 
 const BASE_CASE_INPUT: u32 = 10;
 const PROBLEM_INPUT: u32 = 100;
 
 fn solve(n: u32) -> u32 {
-    BigNum::new(n).factorial().digit_sum()
+    BigNum::from(n).factorial().digits().sum()
 }
 
 fn solve_with_dep<T: MulAssign<usize> + OneExt + ToString>(n: usize) -> u32 {
@@ -48,7 +48,7 @@ impl OneExt for Int {
 
 impl OneExt for BigNum {
     fn one_ext() -> Self {
-        BigNum::new(1)
+        BigNum::from(1)
     }
 }
 

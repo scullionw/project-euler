@@ -9,7 +9,7 @@ const BASE_CASE_INPUT: usize = 15;
 const PROBLEM_INPUT: usize = 1000;
 
 fn solve(n: usize) -> u32 {
-    (BigNum::new(2) << (n - 1)).digit_sum()
+    (BigNum::from(2) << (n - 1)).digits().sum()
 }
 
 fn solve_with_bigint(n: usize) -> u32 {
