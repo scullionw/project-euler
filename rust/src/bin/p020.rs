@@ -2,10 +2,10 @@
 
 use benchtest::*;
 use euler::BigNum;
-use num_bigint::{BigInt, BigUint, ToBigInt};
+use num_bigint::BigInt;
 use num_traits::identities::One;
 use ramp::Int;
-use std::ops::{Mul, MulAssign};
+use std::ops::MulAssign;
 
 const BASE_CASE_INPUT: u32 = 10;
 const PROBLEM_INPUT: u32 = 100;

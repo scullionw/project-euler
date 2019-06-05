@@ -70,7 +70,7 @@ enum Weekday {
 }
 
 impl Weekday {
-    fn next(&self) -> Weekday {
+    fn next(self) -> Weekday {
         use Weekday::*;
         match self {
             Monday => Tuesday,
@@ -101,7 +101,7 @@ enum Month {
 }
 
 impl Month {
-    fn next(&self) -> Month {
+    fn next(self) -> Month {
         use Month::*;
         match self {
             January => February,
@@ -119,7 +119,7 @@ impl Month {
         }
     }
 
-    fn days(&self, year: u32) -> u32 {
+    fn days(self, year: u32) -> u32 {
         use Month::*;
         match self {
             January => 31,
